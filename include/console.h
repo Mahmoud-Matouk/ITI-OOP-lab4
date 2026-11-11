@@ -1,6 +1,9 @@
 #ifndef CONSOLE_H
 #define CONSOLE_H
 #include <bits/stdc++.h>
+#include <cstdio>
+#include <unistd.h>
+#include <termios.h>
 using namespace std;
 
 namespace Ansi {
@@ -51,5 +54,68 @@ void printAt(int x, int y, const string& text, bool isSelected, Color color) {
     setColor(Color::Default);
     cout << endl;
 }
+
+char getch_linux() {
+    char buf{};
+    struct termios old = {};
+    tcgetattr(0, &old);
+    old.c_lflag &= ~ICANON;
+    old.c_lflag &= ~ECHO;
+    old.c_cc[VMIN] = 1;
+    old.c_cc[VTIME] = 0;
+    tcsetattr(0, TCSANOW, &old);
+    read(0, &buf, 1);
+    old.c_lflag |= ICANON;
+    old.c_lflag |= ECHO;
+    tcsetattr(0, TCSADRAIN, &old);
+    return buf;
+}
+
+char getArrowKey() {
+    char key = getch_linux();
+
+    if (key == '\033') {
+        getch_linux();
+        return getch_linux();
+    }
+
+    return key;
+}
+
+// void moveUpDown() {
+//     char byte1='q';
+//     char byte2='q';
+//     char byte3='q';
+//     do {
+//         byte1= getch_linux();
+//         if (byte1 == '\033') {
+//             byte2=getch_linux();
+//             byte3=getch_linux();
+//             switch (byte3) {
+//                 case 'A':
+//                     printf("↑ Up Arrow\n");
+//                     break;
+
+//                 case 'B':
+//                     printf("↓ Down Arrow\n");
+//                     break;
+
+//                 case 'C':
+//                     printf("→ Right Arrow\n");
+//                     break;
+
+//                 case 'D':
+//                     printf("← Left Arrow\n");
+//                     break;
+//                 case 'H':
+//                     printf("Home Button \n");
+//                     break;
+//                 case 'F':
+//                     printf("End Button\n");
+//                     break;
+//             }
+//         }
+//     } while(byte1 != 'q' && byte1 != 'Q'); 
+// }
 
 #endif
