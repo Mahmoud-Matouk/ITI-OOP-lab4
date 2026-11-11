@@ -46,7 +46,7 @@ void setColor(Color color) {
         cout << Ansi::CSI << (int)(color) << Ansi::COLOR_CODE;
 }
 
-void printAt(int x, int y, const string& text, bool isSelected, Color color) {
+void printAt(int x, int y, const string& text, bool isSelected=false, Color color=Color::Default) {
     goToXY(x, y);
     if (isSelected) setColor(color);
     else setColor(Color::Default);

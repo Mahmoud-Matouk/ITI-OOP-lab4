@@ -1,47 +1,94 @@
 #ifndef STATICMENU_H
 #define STATICMENU_H
+#define MAX_SIZE 100
+
 #include <iostream>
+#include "utils.h"
 using namespace std;
 
 class Users {
     private:
-        char *name;
-        char *password;
-        char *email;
+        char name[MAX_SIZE];
+        char password[MAX_SIZE];
+        char email[MAX_SIZE];
         int age;
 
     public:
-        Users(char *username, char *passwd, char *userEmail, int userAge): name(username), password(passwd), email(userEmail), age(userAge) {};
-        
-        //validate for numbers
-        void setName(char *username) {
-            while (true) {
-                cout << "Enter username: ";
-                if (!(cin >> username)) {
-                    cin.clear();
-                    cin.ignore(1000, '\n');
-                    cout << "  Invalid username can't be empty, please try again.\n";
-                } else if (isdigit(username[0])) {
-                    cout << "  The username can't have numbers. Try again.\n";
-                } else {
-                    break;
+        Users() {
+            this->name[0] = '\0';
+            this->password[0] = '\0';
+            this->email[0] = '\0';
+            this->age = 0;
+        }
+
+        bool setName(char *username) {
+            if (username == nullptr) return false;
+            int len = strLen(username);
+            if (len == 0 || len >= MAX_SIZE) return false;
+            for (int i = 0; i < len; ++i) {
+                if (isDigit(username[i])) return false;
+            }
+            strCopy(username, this->name);
+            return true;
+        }
+
+        bool setPassword(char *passwd) {
+            if (passwd == nullptr) return false;
+            int len = strLen(passwd);
+            if (len <= 6 || len >= MAX_SIZE) return false;
+            strCopy(passwd, this->password);
+            return true;
+        }
+
+        bool isPasswordSet(Users *user, int index) {
+            return user->password[index] != '\0';
+        }
+
+        bool setEmail(char *userEmail) {
+            if (userEmail == nullptr) return false;
+            int len = strLen(userEmail);
+            if (len == 0 || len >= MAX_SIZE) return false;
+
+            int atPosition{}, dotPosition{};
+            for (int i = 0; i < len; i++) {
+                if (userEmail[i] == '@') {
+                    atPosition = i;
+                }
+                if (userEmail[i] == '.') {
+                    dotPosition = i;
                 }
             }
+            if (atPosition == 0 || dotPosition == 0 || atPosition >= dotPosition || dotPosition >= len - 1) return false;
+            strCopy(userEmail, this->email);
+            return true;
+        }
+
+
+        bool setAge(int userAge) {
+            if (userAge <= 1) return false;
+            // if it's not a number
+            // if (typeof(userAge) != int) return false;
+            this->age = userAge;
+            return true;
+        }
+
+        const char* getName() {
+            return this->name;
+        }
+
+        const char* getEmail() {
+            return this->email;
+        }
+
+        int getAge() {
+            return this->age;
         }
 
         void setNewUser(char *username, char *passwd, char *userEmail, int userAge) {
             setName(username);
-            // cout << "Enter password: ";
-            // cin >> passwd;
-            // this->password = passwd;
-
-            // cout << "Enter email: ";
-            // cin >> userEmail;
-            // this->email = userEmail;
-
-            // cout << "Enter age: ";
-            // cin >> userAge;
-            // this->age = userAge;
+            setPassword(passwd);
+            setEmail(userEmail);
+            setAge(userAge);
         };
 };
 
