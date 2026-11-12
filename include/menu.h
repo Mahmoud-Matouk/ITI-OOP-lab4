@@ -19,7 +19,7 @@ void displayNewUsersMenu(int spaceX, int spaceY, Users *(userPtr)[], int ptrSize
         return;
     }
     int n = 0;
-    while (userPtr[n] != nullptr && n < ptrSize) {
+    while (n < ptrSize && userPtr[n] != nullptr) {
         ++n;
     }
     if (n == ptrSize) {

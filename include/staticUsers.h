@@ -1,8 +1,6 @@
 #ifndef STATICMENU_H
 #define STATICMENU_H
 #define MAX_SIZE 100
-
-#include <iostream>
 #include "utils.h"
 using namespace std;
 
@@ -49,25 +47,25 @@ class Users {
             int len = strLen(userEmail);
             if (len == 0 || len >= MAX_SIZE) return false;
 
-            int atPosition{}, dotPosition{};
+            int atPosition = -1;
+            int dotPosition = -1;
             for (int i = 0; i < len; i++) {
                 if (userEmail[i] == '@') {
+                    if (atPosition != -1) return false;
                     atPosition = i;
                 }
                 if (userEmail[i] == '.') {
                     dotPosition = i;
                 }
             }
-            if (atPosition == 0 || dotPosition == 0 || atPosition >= dotPosition || dotPosition >= len - 1) return false;
+            if (atPosition <= 0 || dotPosition <= atPosition + 1 || dotPosition >= len - 1) return false;
             strCopy(userEmail, this->email);
             return true;
         }
 
 
         bool setAge(int userAge) {
-            if (userAge <= 1) return false;
-            // if it's not a number
-            // if (typeof(userAge) != int) return false;
+            if (userAge < 1 || userAge > 100) return false;
             this->age = userAge;
             return true;
         }
