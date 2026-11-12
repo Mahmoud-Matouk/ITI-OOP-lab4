@@ -1,9 +1,14 @@
 #ifndef CONSOLE_H
 #define CONSOLE_H
-#include <bits/stdc++.h>
-#include <cstdio>
-#include <unistd.h>
-#include <termios.h>
+#include <iostream>
+
+#ifdef _WIN32
+    #include <conio.h>
+#else
+    #include <termios.h>
+    #include <unistd.h>
+#endif
+
 using namespace std;
 
 namespace Ansi {
@@ -71,6 +76,26 @@ char getch_linux() {
     return buf;
 }
 
+#ifdef _WIN32
+
+char getArrowKey() {
+    char key = _getch();
+    if (key == 0 || key == (char)0xE0) {
+        switch (_getch()) {
+            case 72: return 'A';  // up
+            case 80: return 'B';  // down
+            case 77: return 'C';  // right
+            case 75: return 'D';  // left
+            case 71: return 'H';  // home
+            case 79: return 'F';  // end
+        }
+        return 0;
+    }
+    return key;
+}
+
+#else
+
 char getArrowKey() {
     char key = getch_linux();
 
@@ -81,6 +106,7 @@ char getArrowKey() {
 
     return key;
 }
+#endif
 
 // void moveUpDown() {
 //     char byte1='q';

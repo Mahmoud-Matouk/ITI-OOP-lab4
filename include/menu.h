@@ -154,7 +154,7 @@ void initMenu(int spaceX, int spaceY, Users *(userPtr)[], int ptrSize) {
             selectedIndex = 1;
         } else if (key == 'F') {
             selectedIndex = 3;
-        } else if (key == '\n') {
+        } else if (key == '\n' || key == '\r') {
             switch (selectedIndex) {
                 case 1:
                     displayNewUsersMenu(spaceX, spaceY, userPtr, ptrSize);
