@@ -150,7 +150,11 @@ void initMenu(int spaceX, int spaceY, Users *(userPtr)[], int ptrSize) {
             selectedIndex = (selectedIndex - 1)%4;
         } else if (key == 'B' && selectedIndex < 3) {
             selectedIndex = (selectedIndex + 1)%4;
-        } else if (key == '\n' || key == '\r') {
+        }  else if (key == 'H') {
+            selectedIndex = 1;
+        } else if (key == 'F') {
+            selectedIndex = 3;
+        } else if (key == '\n') {
             switch (selectedIndex) {
                 case 1:
                     displayNewUsersMenu(spaceX, spaceY, userPtr, ptrSize);
@@ -160,7 +164,7 @@ void initMenu(int spaceX, int spaceY, Users *(userPtr)[], int ptrSize) {
                     break;
                 case 3:
                     return;
-            }
+                }
         }
         clearScreen();
     }
