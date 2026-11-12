@@ -60,22 +60,6 @@ void printAt(int x, int y, const string& text, bool isSelected=false, Color colo
     cout << endl;
 }
 
-char getch_linux() {
-    char buf{};
-    struct termios old = {};
-    tcgetattr(0, &old);
-    old.c_lflag &= ~ICANON;
-    old.c_lflag &= ~ECHO;
-    old.c_cc[VMIN] = 1;
-    old.c_cc[VTIME] = 0;
-    tcsetattr(0, TCSANOW, &old);
-    read(0, &buf, 1);
-    old.c_lflag |= ICANON;
-    old.c_lflag |= ECHO;
-    tcsetattr(0, TCSADRAIN, &old);
-    return buf;
-}
-
 #ifdef _WIN32
 
 char getArrowKey() {
@@ -95,6 +79,22 @@ char getArrowKey() {
 }
 
 #else
+
+char getch_linux() {
+    char buf{};
+    struct termios old = {};
+    tcgetattr(0, &old);
+    old.c_lflag &= ~ICANON;
+    old.c_lflag &= ~ECHO;
+    old.c_cc[VMIN] = 1;
+    old.c_cc[VTIME] = 0;
+    tcsetattr(0, TCSANOW, &old);
+    read(0, &buf, 1);
+    old.c_lflag |= ICANON;
+    old.c_lflag |= ECHO;
+    tcsetattr(0, TCSADRAIN, &old);
+    return buf;
+}
 
 char getArrowKey() {
     char key = getch_linux();
